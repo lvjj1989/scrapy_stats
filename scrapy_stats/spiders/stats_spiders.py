@@ -21,7 +21,7 @@ class StatsSpider(scrapy.Spider):
         "SF_cookie_1": "37059734",
         "_trs_uv": "knx19n12_6_ggt8",
         # "_trs_ua_s_1": "knx2pr7r_6_3nat",
-        # "wzws_cid": "9fa7aa4f9b5e18a398116a49bb3ed75fe29d60c298156cf723dcc4dd39c6233fadce644c3dc6e7eb12350cf92992e3c85145d3cccb1cc1aa95efe20c0490805fa9bfb36dd31021544d334dda0eb5e75f"
+        "wzws_cid": "129c15ac6d30b7d410e9ebc334c755c094b01de40554dcea72bad0ac825caa9da70bc98a3f870f33cc08001eeba7cb41dcf905c3e9d5e930a72885ff96b88fca874683c0a38feb576760d035a277dd6e"
     }
 
     def parse(self, response):
@@ -61,19 +61,19 @@ class StatsSpider(scrapy.Spider):
                 stats['市辖区县代码'] = item.xpath('td[1]/text()').extract()[0]
             if towntr_url:
                 towntr_url = response.urljoin(towntr_url.extract()[0])
-                yield stats
-                # yield scrapy.Request(url=towntr_url, meta={"stats":  copy.deepcopy(stats)}, callback=self.parse_towntr,
-                #                      dont_filter=True, headers=StatsSpider.headers, cookies=StatsSpider.cookies)
+                # yield stats
+                yield scrapy.Request(url=towntr_url, meta={"stats":  copy.deepcopy(stats)}, callback=self.parse_towntr,
+                                     dont_filter=True, headers=StatsSpider.headers, cookies=StatsSpider.cookies)
 
-    # def parse_towntr(self, response):
-    #     stats = response.meta['stats']
-    #     towntr_list = response.xpath('//*[@class="towntr"]')
-    #     # print('towntr_list = ')
-    #     for item in towntr_list:
-    #         stats['城镇'] = item.xpath('td[2]/a/text()').extract()[0]
-    #         stats['城镇代码'] = item.xpath('td[1]/a/text()').extract()[0]
-    #         county_url = response.urljoin(item.xpath('td[1]/a/@href').extract()[0])
-    #         # yield stats
+    def parse_towntr(self, response):
+        stats = response.meta['stats']
+        towntr_list = response.xpath('//*[@class="towntr"]')
+        # print('towntr_list = ')
+        for item in towntr_list:
+            stats['城镇'] = item.xpath('td[2]/a/text()').extract()[0]
+            stats['城镇代码'] = item.xpath('td[1]/a/text()').extract()[0]
+            county_url = response.urljoin(item.xpath('td[1]/a/@href').extract()[0])
+            yield stats
     #         yield scrapy.Request(url=county_url, meta={"stats": copy.deepcopy(stats)}, callback=self.parse_villagetr,
     #                              dont_filter=True, headers=StatsSpider.headers, cookies=StatsSpider.cookies)
     #
