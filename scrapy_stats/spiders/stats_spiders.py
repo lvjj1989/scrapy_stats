@@ -13,7 +13,7 @@ class StatsSpider(scrapy.Spider):
     name = 'stats_scrapy'
     # start_urls = ['http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2018/index.html']
     allowed_domains = ['www.stats.gov.cn']
-    start_urls = ['http://www.stats.gov.cn/tjsj/tjbz/tjyqhdmhcxhfdm/2020/index.html']
+    start_urls = ['https://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2023/']
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36"
     }
